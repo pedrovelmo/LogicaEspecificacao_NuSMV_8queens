@@ -1,0 +1,244 @@
+MODULE main
+VAR
+  atacada : boolean;
+  
+  semaforo: 1..8;
+
+  rai1: process rainha(1, rai2.id, rai2.rp, rai3.id, rai3.rp, rai4.id, rai4.rp, rai5.id, rai5.rp, rai6.id, rai6.rp, rai7.id, rai7.rp, rai8.id, rai8.rp, atacada, semaforo);
+
+  rai2: process rainha(2, rai1.id, rai1.rp, rai3.id, rai3.rp, rai4.id, rai4.rp, rai5.id, rai5.rp, rai6.id, rai6.rp, rai7.id, rai7.rp, rai8.id, rai8.rp, atacada, semaforo);
+
+  rai3: process rainha(3, rai1.id, rai1.rp, rai2.id, rai2.rp, rai4.id, rai4.rp, rai5.id, rai5.rp, rai6.id, rai6.rp, rai7.id, rai7.rp, rai8.id, rai8.rp, atacada, semaforo);
+
+  rai4: process rainha(4, rai1.id, rai1.rp, rai2.id, rai2.rp, rai3.id, rai3.rp, rai5.id, rai5.rp, rai6.id, rai6.rp, rai7.id, rai7.rp, rai8.id, rai8.rp, atacada, semaforo);
+
+  rai5: process rainha(5, rai1.id, rai1.rp, rai2.id, rai2.rp, rai3.id, rai3.rp, rai4.id, rai4.rp, rai6.id, rai6.rp, rai7.id, rai7.rp, rai8.id, rai8.rp, atacada, semaforo);
+
+  rai6: process rainha(6, rai1.id, rai1.rp, rai2.id, rai2.rp, rai3.id, rai3.rp, rai4.id, rai4.rp, rai5.id, rai5.rp, rai7.id, rai7.rp, rai8.id, rai8.rp, atacada, semaforo);
+
+  rai7: process rainha(7, rai1.id, rai1.rp, rai2.id, rai2.rp, rai3.id, rai3.rp, rai4.id, rai4.rp, rai5.id, rai5.rp, rai6.id, rai6.rp, rai8.id, rai8.rp, atacada, semaforo);
+
+  rai8: process rainha(8, rai1.id, rai1.rp, rai2.id, rai2.rp, rai3.id, rai3.rp, rai4.id, rai4.rp, rai5.id, rai5.rp, rai6.id, rai6.rp, rai7.id, rai7.rp, atacada, semaforo);
+
+
+ASSIGN
+init(atacada) := FALSE;
+init(semaforo) := 1;
+
+SPEC
+!EF!(
+    -- Rainhas no tabuleiro
+    (rai1.rp = 0 | rai2.rp = 0 | rai3.rp = 0 | rai4.rp = 0 | rai5.rp = 0 | rai6.rp = 0 | rai7.rp = 0 | rai8.rp = 0) |
+
+    -- linha
+    ((rai1.rp = rai2.rp | 
+    rai1.rp = rai3.rp | 
+    rai1.rp = rai4.rp | 
+    rai1.rp = rai5.rp | 
+    rai1.rp = rai6.rp | 
+    rai1.rp = rai7.rp | 
+    rai1.rp = rai8.rp) |
+
+    (rai2.rp = rai3.rp | 
+    rai2.rp = rai4.rp | 
+    rai2.rp = rai5.rp | 
+    rai2.rp = rai6.rp | 
+    rai2.rp = rai7.rp | 
+    rai2.rp = rai8.rp) |
+
+    (rai3.rp = rai4.rp | 
+    rai3.rp = rai5.rp | 
+    rai3.rp = rai6.rp | 
+    rai3.rp = rai7.rp | 
+    rai3.rp = rai8.rp) |
+
+    (rai4.rp = rai5.rp | 
+    rai4.rp = rai6.rp | 
+    rai4.rp = rai7.rp | 
+    rai4.rp = rai8.rp) |
+
+    (rai5.rp = rai6.rp | 
+    rai5.rp = rai7.rp | 
+    rai5.rp = rai8.rp) |
+
+    (rai6.rp = rai7.rp | 
+    rai6.rp = rai8.rp) |
+
+    (rai7.rp = rai8.rp) | 
+
+    -- Diagonal Crescente
+    ((rai1.rp + rai1.id) = (rai2.rp + rai2.id) | 
+    (rai1.rp + rai1.id) = (rai3.rp + rai3.id) | 
+    (rai1.rp + rai1.id) = (rai4.rp + rai4.id) | 
+    (rai1.rp + rai1.id) = (rai5.rp + rai5.id) |
+    (rai1.rp + rai1.id) = (rai6.rp + rai6.id) |
+    (rai1.rp + rai1.id) = (rai7.rp + rai7.id) |
+    (rai1.rp + rai1.id) = (rai8.rp + rai8.id)) |
+
+    ((rai2.rp + rai2.id) = (rai3.rp + rai3.id) | 
+    (rai2.rp + rai2.id) = (rai4.rp + rai4.id) | 
+    (rai2.rp + rai2.id) = (rai5.rp + rai5.id) |
+    (rai2.rp + rai2.id) = (rai6.rp + rai6.id) |
+    (rai2.rp + rai2.id) = (rai7.rp + rai7.id) |
+    (rai2.rp + rai2.id) = (rai8.rp + rai8.id)) |
+
+    ((rai3.rp + rai3.id) = (rai4.rp + rai4.id) | 
+    (rai3.rp + rai3.id) = (rai5.rp + rai5.id) |
+    (rai3.rp + rai3.id) = (rai6.rp + rai6.id) |
+    (rai3.rp + rai3.id) = (rai7.rp + rai7.id) |
+    (rai3.rp + rai3.id) = (rai8.rp + rai8.id)) |
+
+    ((rai4.rp + rai4.id) = (rai5.rp + rai5.id) |
+    (rai4.rp + rai4.id) = (rai6.rp + rai6.id) |
+    (rai4.rp + rai4.id) = (rai7.rp + rai7.id) |
+    (rai4.rp + rai4.id) = (rai8.rp + rai8.id)) |
+
+    ((rai5.rp + rai5.id) = (rai6.rp + rai6.id) |
+    (rai5.rp + rai5.id) = (rai7.rp + rai7.id) |
+    (rai5.rp + rai5.id) = (rai8.rp + rai8.id)) |
+
+    ((rai6.rp + rai6.id) = (rai7.rp + rai7.id) |
+    (rai6.rp + rai6.id) = (rai8.rp + rai8.id)) |
+
+    ((rai7.rp + rai7.id) = (rai8.rp + rai8.id)) | 
+
+    -- Diagonal Decrescente
+    ((rai1.rp - rai1.id) = (rai2.rp - rai2.id) | 
+    (rai1.rp - rai1.id) = (rai3.rp - rai3.id) | 
+    (rai1.rp - rai1.id) = (rai4.rp - rai4.id) | 
+    (rai1.rp - rai1.id) = (rai5.rp - rai5.id) |
+    (rai1.rp - rai1.id) = (rai6.rp - rai6.id) |
+    (rai1.rp - rai1.id) = (rai7.rp - rai7.id) |
+    (rai1.rp - rai1.id) = (rai8.rp - rai8.id)) |
+
+    ((rai2.rp - rai2.id) = (rai3.rp - rai3.id) | 
+    (rai2.rp - rai2.id) = (rai4.rp - rai4.id) | 
+    (rai2.rp - rai2.id) = (rai5.rp - rai5.id) |
+    (rai2.rp - rai2.id) = (rai6.rp - rai6.id) |
+    (rai2.rp - rai2.id) = (rai7.rp - rai7.id) |
+    (rai2.rp - rai2.id) = (rai8.rp - rai8.id)) |
+
+    ((rai3.rp - rai3.id) = (rai4.rp - rai4.id) | 
+    (rai3.rp - rai3.id) = (rai5.rp - rai5.id) |
+    (rai3.rp - rai3.id) = (rai6.rp - rai6.id) |
+    (rai3.rp - rai3.id) = (rai7.rp - rai7.id) |
+    (rai3.rp - rai3.id) = (rai8.rp - rai8.id)) |
+
+    ((rai4.rp - rai4.id) = (rai5.rp - rai5.id) |
+    (rai4.rp - rai4.id) = (rai6.rp - rai6.id) |
+    (rai4.rp - rai4.id) = (rai7.rp - rai7.id) |
+    (rai4.rp - rai4.id) = (rai8.rp - rai8.id)) |
+
+    ((rai5.rp - rai5.id) = (rai6.rp - rai6.id) |
+    (rai5.rp - rai5.id) = (rai7.rp - rai7.id) |
+    (rai5.rp - rai5.id) = (rai8.rp - rai8.id)) |
+
+    ((rai6.rp - rai6.id) = (rai7.rp - rai7.id) |
+    (rai6.rp - rai6.id) = (rai8.rp - rai8.id)) |
+
+    ((rai7.rp - rai7.id) = (rai8.rp - rai8.id)))
+)
+
+
+MODULE rainha(current, id2, rp2, id3, rp3, id4, rp4, id5, rp5, id6, rp6, id7, rp7, id8, rp8, atacada, semaforo)
+VAR 
+ id: 1..8; -- rainha
+ rp : 0..8; -- Linha
+
+
+ASSIGN
+init(id) := current;
+init(rp) := 0; 
+
+next(id) := id;
+
+next(rp) := 
+  case
+    id = 1 & rp = 0 & semaforo = id : 1;
+    
+    rp = 0 & semaforo = id : 1;
+    rp = 1 & semaforo = id : 2;
+    rp = 2 & semaforo = id : 3;
+    rp = 3 & semaforo = id : 4;
+    rp = 4 & semaforo = id : 5;
+    rp = 5 & semaforo = id : 6;
+    rp = 6 & semaforo = id : 7;
+    rp = 7 & semaforo = id : 8;
+    rp = 8 & semaforo = id : 0;
+    
+    TRUE: rp;
+  esac;
+
+next(atacada) := 
+  case
+    semaforo != id : atacada;
+    
+    (semaforo = id) &
+    ((rp > 0) &
+    -- Linha
+    ((rp = rp2) | 
+    (rp = rp3) | 
+    (rp = rp4) | 
+    (rp = rp5) | 
+    (rp = rp6) | 
+    (rp = rp7) | 
+    (rp = rp8) | 
+    -- Diagonal
+    (((rp + id) = (rp2 + id2)) & rp2 > 0) | 
+    (((rp + id) = (rp3 + id3)) & rp3 > 0) | 
+    (((rp + id) = (rp4 + id4)) & rp4 > 0) | 
+    (((rp + id) = (rp5 + id5)) & rp5 > 0) |
+    (((rp + id) = (rp6 + id6)) & rp6 > 0) |
+    (((rp + id) = (rp7 + id7)) & rp7 > 0) |
+    (((rp + id) = (rp8 + id8)) & rp8 > 0) |
+    (((rp - id) = (rp2 - id2)) & rp2 > 0) |
+    (((rp - id) = (rp3 - id3)) & rp3 > 0) | 
+    (((rp - id) = (rp4 - id4)) & rp4 > 0) |
+    (((rp - id) = (rp5 - id5)) & rp5 > 0) |
+    (((rp - id) = (rp6 - id6)) & rp6 > 0) |
+    (((rp - id) = (rp7 - id7)) & rp7 > 0) |
+    (((rp - id) = (rp8 - id8)) & rp8 > 0))) : TRUE;
+
+    TRUE: FALSE;
+  esac;
+
+
+next(semaforo) := 
+	case
+    semaforo = 1 & rp = 0 : 1;
+    semaforo = 1 & !atacada & rp > 0: 2;
+
+    semaforo = 2 & rp = 0 : 1;
+	  semaforo = 2 & atacada & rp > 0 : 2;
+    semaforo = 2 & !atacada & rp > 0: 3;
+    
+    semaforo = 3 & rp = 0 : 2;
+	  semaforo = 3 & atacada & rp > 0 : 3;
+    semaforo = 3 & !atacada & rp > 0: 4;   
+
+    semaforo = 4 & rp = 0 : 3;
+	  semaforo = 4 & atacada & rp > 0 : 4;
+    semaforo = 4 & !atacada & rp > 0: 5;
+
+    semaforo = 5 & rp = 0 : 4;
+	  semaforo = 5 & atacada & rp > 0 : 5;
+    semaforo = 5 & !atacada & rp > 0: 6;   
+
+    semaforo = 6 & rp = 0 : 5;
+	  semaforo = 6 & atacada & rp > 0 : 6;
+    semaforo = 6 & !atacada & rp > 0: 7;   
+
+    semaforo = 7 & rp = 0 : 6;
+	  semaforo = 7 & atacada & rp > 0 : 7;
+    semaforo = 7 & !atacada & rp > 0: 8;      
+
+    semaforo = 8 & rp = 0 : 7;
+	  semaforo = 8 & atacada & rp > 0 : 8;
+
+    TRUE: semaforo;
+	esac;
+
+
+FAIRNESS 
+  running;
+

@@ -1,0 +1,262 @@
+MODULE main
+VAR
+  moved1: boolean;
+  moved2: boolean;
+  moved3: boolean;
+  moved4: boolean;
+  moved5: boolean;
+  moved6: boolean;
+  moved7: boolean;
+  moved8: boolean;
+
+  rai1: process rainha(1, moved1);
+
+  rai2: process rainha(2, moved2);
+
+  rai3: process rainha(3, moved3);
+
+  rai4: process rainha(4, moved4);
+
+  rai5: process rainha(5, moved5);
+
+  rai6: process rainha(6, moved6);
+
+  rai7: process rainha(7, moved7);
+
+  rai8: process rainha(8, moved8);
+
+ASSIGN
+moved1 := 
+    -- Linha
+    (rai1.rp = rai2.rp) | 
+    (rai1.rp = rai3.rp) | 
+    (rai1.rp = rai4.rp) | 
+    (rai1.rp = rai5.rp) | 
+    (rai1.rp = rai6.rp) | 
+    (rai1.rp = rai7.rp) | 
+    (rai1.rp = rai8.rp) |
+    -- Diagonal Crescente
+    ((rai1.rp + rai1.id) = (rai2.rp + rai2.id)) | 
+    ((rai1.rp + rai1.id) = (rai3.rp + rai3.id)) | 
+    ((rai1.rp + rai1.id) = (rai4.rp + rai4.id)) | 
+    ((rai1.rp + rai1.id) = (rai5.rp + rai5.id)) |
+    ((rai1.rp + rai1.id) = (rai6.rp + rai6.id)) |
+    ((rai1.rp + rai1.id) = (rai7.rp + rai7.id)) |
+    ((rai1.rp + rai1.id) = (rai8.rp + rai8.id)) |
+    -- Diagonal Descrescente
+    ((rai1.rp - rai1.id) = (rai2.rp - rai2.id)) | 
+    ((rai1.rp - rai1.id) = (rai3.rp - rai3.id)) | 
+    ((rai1.rp - rai1.id) = (rai4.rp - rai4.id)) | 
+    ((rai1.rp - rai1.id) = (rai5.rp - rai5.id)) |
+    ((rai1.rp - rai1.id) = (rai6.rp - rai6.id)) |
+    ((rai1.rp - rai1.id) = (rai7.rp - rai7.id)) |
+    ((rai1.rp - rai1.id) = (rai8.rp - rai8.id)) ;
+
+moved2 :=   
+    -- Linha  
+    (rai2.rp = rai1.rp) |
+    (rai2.rp = rai3.rp) | 
+    (rai2.rp = rai4.rp) | 
+    (rai2.rp = rai5.rp) | 
+    (rai2.rp = rai6.rp) | 
+    (rai2.rp = rai7.rp) | 
+    (rai2.rp = rai8.rp) |
+    -- Diagonal Crescente
+    ((rai2.rp + rai2.id) = (rai1.rp + rai1.id)) |
+    ((rai2.rp + rai2.id) = (rai3.rp + rai3.id)) | 
+    ((rai2.rp + rai2.id) = (rai4.rp + rai4.id)) | 
+    ((rai2.rp + rai2.id) = (rai5.rp + rai5.id)) |
+    ((rai2.rp + rai2.id) = (rai6.rp + rai6.id)) |
+    ((rai2.rp + rai2.id) = (rai7.rp + rai7.id)) |
+    ((rai2.rp + rai2.id) = (rai8.rp + rai8.id)) |
+    -- Diagonal Decrescente
+    ((rai2.rp - rai2.id) = (rai1.rp - rai1.id)) |
+    ((rai2.rp - rai2.id) = (rai3.rp - rai3.id)) | 
+    ((rai2.rp - rai2.id) = (rai4.rp - rai4.id)) | 
+    ((rai2.rp - rai2.id) = (rai5.rp - rai5.id)) |
+    ((rai2.rp - rai2.id) = (rai6.rp - rai6.id)) |
+    ((rai2.rp - rai2.id) = (rai7.rp - rai7.id)) |
+    ((rai2.rp - rai2.id) = (rai8.rp - rai8.id)) ;
+
+moved3 :=   
+    -- Linha  
+    (rai3.rp = rai1.rp) |
+    (rai3.rp = rai2.rp) |
+    (rai3.rp = rai4.rp) | 
+    (rai3.rp = rai5.rp) | 
+    (rai3.rp = rai6.rp) | 
+    (rai3.rp = rai7.rp) | 
+    (rai3.rp = rai8.rp) |
+    -- Diagonal Crescente
+    ((rai3.rp + rai3.id) = (rai1.rp + rai1.id)) |
+    ((rai3.rp + rai3.id) = (rai2.rp + rai2.id)) | 
+    ((rai3.rp + rai3.id) = (rai4.rp + rai4.id)) | 
+    ((rai3.rp + rai3.id) = (rai5.rp + rai5.id)) |
+    ((rai3.rp + rai3.id) = (rai6.rp + rai6.id)) |
+    ((rai3.rp + rai3.id) = (rai7.rp + rai7.id)) |
+    ((rai3.rp + rai3.id) = (rai8.rp + rai8.id)) |
+    -- Diagonal Decrescente
+    ((rai3.rp - rai3.id) = (rai1.rp - rai1.id)) |
+    ((rai3.rp - rai3.id) = (rai2.rp - rai2.id)) | 
+    ((rai3.rp - rai3.id) = (rai4.rp - rai4.id)) | 
+    ((rai3.rp - rai3.id) = (rai5.rp - rai5.id)) |
+    ((rai3.rp - rai3.id) = (rai6.rp - rai6.id)) |
+    ((rai3.rp - rai3.id) = (rai7.rp - rai7.id)) |
+    ((rai3.rp - rai3.id) = (rai8.rp - rai8.id)) ;
+
+moved4 :=   
+    -- Linha 
+    (rai4.rp = rai1.rp) | 
+    (rai4.rp = rai2.rp) | 
+    (rai4.rp = rai3.rp) | 
+    (rai4.rp = rai5.rp) | 
+    (rai4.rp = rai6.rp) | 
+    (rai4.rp = rai7.rp) | 
+    (rai4.rp = rai8.rp) |
+    -- Diagonal Crescente
+    ((rai4.rp + rai4.id) = (rai1.rp + rai1.id)) |
+    ((rai4.rp + rai4.id) = (rai2.rp + rai2.id)) | 
+    ((rai4.rp + rai4.id) = (rai3.rp + rai3.id)) | 
+    ((rai4.rp + rai4.id) = (rai5.rp + rai5.id)) |
+    ((rai4.rp + rai4.id) = (rai6.rp + rai6.id)) |
+    ((rai4.rp + rai4.id) = (rai7.rp + rai7.id)) |
+    ((rai4.rp + rai4.id) = (rai8.rp + rai8.id)) |
+    -- Diagonal Decrescente
+    ((rai4.rp - rai4.id) = (rai1.rp - rai1.id)) |
+    ((rai4.rp - rai4.id) = (rai2.rp - rai2.id)) | 
+    ((rai4.rp - rai4.id) = (rai3.rp - rai3.id)) | 
+    ((rai4.rp - rai4.id) = (rai5.rp - rai5.id)) |
+    ((rai4.rp - rai4.id) = (rai6.rp - rai6.id)) |
+    ((rai4.rp - rai4.id) = (rai7.rp - rai7.id)) |
+    ((rai4.rp - rai4.id) = (rai8.rp - rai8.id)) ;
+
+moved5 :=   
+    -- Linha  
+    (rai5.rp = rai1.rp) | 
+    (rai5.rp = rai2.rp) | 
+    (rai5.rp = rai3.rp) | 
+    (rai5.rp = rai4.rp) | 
+    (rai5.rp = rai6.rp) | 
+    (rai5.rp = rai7.rp) | 
+    (rai5.rp = rai8.rp) |
+    -- Diagonal Crescente
+    ((rai5.rp + rai5.id) = (rai1.rp + rai1.id)) |
+    ((rai5.rp + rai5.id) = (rai2.rp + rai2.id)) | 
+    ((rai5.rp + rai5.id) = (rai3.rp + rai3.id)) | 
+    ((rai5.rp + rai5.id) = (rai4.rp + rai4.id)) |
+    ((rai5.rp + rai5.id) = (rai6.rp + rai6.id)) |
+    ((rai5.rp + rai5.id) = (rai7.rp + rai7.id)) |
+    ((rai5.rp + rai5.id) = (rai8.rp + rai8.id)) |
+    -- Diagonal Decrescente
+    ((rai5.rp - rai5.id) = (rai1.rp - rai1.id)) |
+    ((rai5.rp - rai5.id) = (rai2.rp - rai2.id)) | 
+    ((rai5.rp - rai5.id) = (rai3.rp - rai3.id)) | 
+    ((rai5.rp - rai5.id) = (rai4.rp - rai4.id)) |
+    ((rai5.rp - rai5.id) = (rai6.rp - rai6.id)) |
+    ((rai5.rp - rai5.id) = (rai7.rp - rai7.id)) |
+    ((rai5.rp - rai5.id) = (rai8.rp - rai8.id)) ;
+
+moved6 :=   
+    -- Linha 
+    (rai6.rp = rai1.rp) | 
+    (rai6.rp = rai2.rp) | 
+    (rai6.rp = rai3.rp) | 
+    (rai6.rp = rai4.rp) | 
+    (rai6.rp = rai5.rp) |  
+    (rai6.rp = rai7.rp) | 
+    (rai6.rp = rai8.rp) |
+    -- Diagonal Crescente
+    ((rai6.rp + rai6.id) = (rai1.rp + rai1.id)) |
+    ((rai6.rp + rai6.id) = (rai2.rp + rai2.id)) |
+    ((rai6.rp + rai6.id) = (rai3.rp + rai3.id)) |
+    ((rai6.rp + rai6.id) = (rai4.rp + rai4.id)) |
+    ((rai6.rp + rai6.id) = (rai5.rp + rai5.id)) |
+    ((rai6.rp + rai6.id) = (rai7.rp + rai7.id)) |
+    ((rai6.rp + rai6.id) = (rai8.rp + rai8.id)) |
+    -- Diagonal Decrescente
+    ((rai6.rp - rai6.id) = (rai1.rp - rai1.id)) |
+    ((rai6.rp - rai6.id) = (rai2.rp - rai2.id)) |
+    ((rai6.rp - rai6.id) = (rai3.rp - rai3.id)) |
+    ((rai6.rp - rai6.id) = (rai4.rp - rai4.id)) |
+    ((rai6.rp - rai6.id) = (rai5.rp - rai5.id)) |
+    ((rai6.rp - rai6.id) = (rai7.rp - rai7.id)) |
+    ((rai6.rp - rai6.id) = (rai8.rp - rai8.id)) ;
+
+moved7 := 
+    -- Linha 
+    (rai7.rp = rai1.rp) | 
+    (rai7.rp = rai2.rp) | 
+    (rai7.rp = rai3.rp) | 
+    (rai7.rp = rai4.rp) | 
+    (rai7.rp = rai5.rp) |  
+    (rai7.rp = rai6.rp) | 
+    (rai7.rp = rai8.rp) |
+    -- Diagonal Crescente
+    ((rai7.rp + rai7.id) = (rai1.rp + rai1.id)) |
+    ((rai7.rp + rai7.id) = (rai2.rp + rai2.id)) |
+    ((rai7.rp + rai7.id) = (rai3.rp + rai3.id)) |
+    ((rai7.rp + rai7.id) = (rai4.rp + rai4.id)) |
+    ((rai7.rp + rai7.id) = (rai5.rp + rai5.id)) |
+    ((rai7.rp + rai7.id) = (rai6.rp + rai6.id)) |
+    ((rai7.rp + rai7.id) = (rai8.rp + rai8.id)) |
+    -- Diagonal Decrescente
+    ((rai7.rp - rai7.id) = (rai1.rp - rai1.id)) |
+    ((rai7.rp - rai7.id) = (rai2.rp - rai2.id)) |
+    ((rai7.rp - rai7.id) = (rai3.rp - rai3.id)) |
+    ((rai7.rp - rai7.id) = (rai4.rp - rai4.id)) |
+    ((rai7.rp - rai7.id) = (rai5.rp - rai5.id)) |
+    ((rai7.rp - rai7.id) = (rai6.rp - rai6.id)) |
+    ((rai7.rp - rai7.id) = (rai8.rp - rai8.id)) ;
+
+moved8 := 
+    -- Linha 
+    (rai8.rp = rai1.rp) | 
+    (rai8.rp = rai2.rp) | 
+    (rai8.rp = rai3.rp) | 
+    (rai8.rp = rai4.rp) | 
+    (rai8.rp = rai5.rp) |  
+    (rai8.rp = rai6.rp) | 
+    (rai8.rp = rai7.rp) |
+    -- Diagonal Crescente
+    ((rai8.rp + rai8.id) = (rai1.rp + rai1.id)) |
+    ((rai8.rp + rai8.id) = (rai2.rp + rai2.id)) |
+    ((rai8.rp + rai8.id) = (rai3.rp + rai3.id)) |
+    ((rai8.rp + rai8.id) = (rai4.rp + rai4.id)) |
+    ((rai8.rp + rai8.id) = (rai5.rp + rai5.id)) |
+    ((rai8.rp + rai8.id) = (rai6.rp + rai6.id)) |
+    ((rai8.rp + rai8.id) = (rai7.rp + rai7.id)) |
+    -- Diagonal Decrescente
+    ((rai8.rp - rai8.id) = (rai1.rp - rai1.id)) |
+    ((rai8.rp - rai8.id) = (rai2.rp - rai2.id)) |
+    ((rai8.rp - rai8.id) = (rai3.rp - rai3.id)) |
+    ((rai8.rp - rai8.id) = (rai4.rp - rai4.id)) |
+    ((rai8.rp - rai8.id) = (rai5.rp - rai5.id)) |
+    ((rai8.rp - rai8.id) = (rai6.rp - rai6.id)) |
+    ((rai8.rp - rai8.id) = (rai7.rp - rai7.id)) ;
+
+SPEC
+!EF !(moved1 | moved2 | moved3 | moved4 | moved5 | moved6 | moved7 | moved8)
+
+
+
+MODULE rainha(pos_col, moved)
+VAR 
+ id: 1..8;
+ rp : {1,2,3,4,5,6,7,8};
+
+
+ASSIGN
+ init(id) := pos_col;
+ init(rp) := 1; 
+ 
+next(id) := id;
+
+next(rp) := 
+  case
+    moved : rp = 8  ? 1 : rp + 1;
+    TRUE: rp;
+  esac;
+
+FAIRNESS 
+  running;
+

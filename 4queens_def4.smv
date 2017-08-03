@@ -1,0 +1,109 @@
+MODULE main
+VAR
+  moved1: boolean;
+  moved2: boolean;
+  moved3: boolean;
+  moved4: boolean;
+
+
+  rai1: process rainha(1, moved1);
+
+  rai2: process rainha(2, moved2);
+
+  rai3: process rainha(3, moved3);
+
+  rai4: process rainha(4, moved4);
+
+
+ASSIGN
+moved1 := 
+    --linha
+    (rai1.rp = rai2.rp) | 
+    (rai1.rp = rai3.rp) | 
+    (rai1.rp = rai4.rp) | 
+    
+    -- Diagonal Crescente
+    ((rai1.rp + rai1.id) = (rai2.rp + rai2.id)) | 
+    ((rai1.rp + rai1.id) = (rai3.rp + rai3.id)) | 
+    ((rai1.rp + rai1.id) = (rai4.rp + rai4.id)) | 
+    
+    -- Diagonal Descrescente
+    ((rai1.rp - rai1.id) = (rai2.rp - rai2.id)) | 
+    ((rai1.rp - rai1.id) = (rai3.rp - rai3.id)) | 
+    ((rai1.rp - rai1.id) = (rai4.rp - rai4.id)) ;
+
+moved2 :=   
+    --linha  
+    (rai2.rp = rai1.rp) |
+    (rai2.rp = rai3.rp) | 
+    (rai2.rp = rai4.rp) | 
+    
+    -- Diagonal Crescente
+    ((rai2.rp + rai2.id) = (rai1.rp + rai1.id)) |
+    ((rai2.rp + rai2.id) = (rai3.rp + rai3.id)) | 
+    ((rai2.rp + rai2.id) = (rai4.rp + rai4.id)) | 
+    
+    -- Diagonal Decrescente
+    ((rai2.rp - rai2.id) = (rai1.rp - rai1.id)) |
+    ((rai2.rp - rai2.id) = (rai3.rp - rai3.id)) | 
+    ((rai2.rp - rai2.id) = (rai4.rp - rai4.id)) ;
+
+moved3 :=   
+    --linha  
+    (rai3.rp = rai1.rp) |
+    (rai3.rp = rai2.rp) |
+    (rai3.rp = rai4.rp) | 
+    
+    -- Diagonal Crescente
+    ((rai3.rp + rai3.id) = (rai1.rp + rai1.id)) |
+    ((rai3.rp + rai3.id) = (rai2.rp + rai2.id)) | 
+    ((rai3.rp + rai3.id) = (rai4.rp + rai4.id)) | 
+    
+    -- Diagonal Decrescente
+    ((rai3.rp - rai3.id) = (rai1.rp - rai1.id)) |
+    ((rai3.rp - rai3.id) = (rai2.rp - rai2.id)) | 
+    ((rai3.rp - rai3.id) = (rai4.rp - rai4.id)) ;
+
+moved4 :=   
+    --linha 
+    (rai4.rp = rai1.rp) | 
+    (rai4.rp = rai2.rp) | 
+    (rai4.rp = rai3.rp) | 
+    
+    -- Diagonal Crescente
+    ((rai4.rp + rai4.id) = (rai1.rp + rai1.id)) |
+    ((rai4.rp + rai4.id) = (rai2.rp + rai2.id)) | 
+    ((rai4.rp + rai4.id) = (rai3.rp + rai3.id)) | 
+    
+    -- Diagonal Decrescente
+    ((rai4.rp - rai4.id) = (rai1.rp - rai1.id)) |
+    ((rai4.rp - rai4.id) = (rai2.rp - rai2.id)) | 
+    ((rai4.rp - rai4.id) = (rai3.rp - rai3.id)) ;
+
+  
+
+SPEC
+!EF !(moved1 | moved2 | moved3 | moved4)
+
+
+MODULE rainha(pos_col, moved)
+VAR 
+ id: 1..4;
+ rp : {1,2,3,4};
+
+
+ASSIGN
+ init(id) := pos_col;
+ init(rp) := 1; 
+
+next(id) := id;
+
+next(rp) := 
+  case
+    moved : rp = 4  ? 1 : rp + 1;
+    TRUE: rp;
+  esac;
+
+FAIRNESS 
+  running;
+

@@ -1,0 +1,1119 @@
+MODULE main
+VAR
+  linha1: 0..9;
+  linha2: 0..9;
+  linha3: 0..9;
+  linha4: 0..9;
+  linha5: 0..9;
+  linha6: 0..9;
+  linha7: 0..9;
+  linha8: 0..9;
+
+  semaforo: 1..8;
+
+  col1: process rainha1(linha1, linha2, linha3, linha4, linha5, linha6, linha7, linha8, semaforo);
+  col2: process rainha2(linha1, linha2, linha3, linha4, linha5, linha6, linha7, linha8, semaforo);
+  col3: process rainha3(linha1, linha2, linha3, linha4, linha5, linha6, linha7, linha8, semaforo);
+  col4: process rainha4(linha1, linha2, linha3, linha4, linha5, linha6, linha7, linha8, semaforo);
+  col5: process rainha5(linha1, linha2, linha3, linha4, linha5, linha6, linha7, linha8, semaforo);
+  col6: process rainha6(linha1, linha2, linha3, linha4, linha5, linha6, linha7, linha8, semaforo);
+  col7: process rainha7(linha1, linha2, linha3, linha4, linha5, linha6, linha7, linha8, semaforo);
+  col8: process rainha8(linha1, linha2, linha3, linha4, linha5, linha6, linha7, linha8, semaforo);
+
+
+ASSIGN
+init(linha1) := 1..8;
+init(linha2) := 0;
+init(linha3) := 0;
+init(linha4) := 0;
+init(linha5) := 0;
+init(linha6) := 0;
+init(linha7) := 0;
+init(linha8) := 0;
+
+init(semaforo) := 1;
+
+next(linha1) := linha1;
+next(linha2) := linha2;
+next(linha3) := linha3;
+next(linha4) := linha4;
+next(linha5) := linha5;
+next(linha6) := linha6;
+next(linha7) := linha7;
+next(linha8) := linha8;
+
+next(semaforo) := 
+	case
+    semaforo = 1 : (linha1 = 0 | linha1 > 8) ? 1 : 2;   
+    
+    semaforo = 2 & linha2 = 0 : 2;
+    semaforo = 2 : linha2 > 8 ? 1 : 3;
+
+    semaforo = 3 & linha3 = 0 : 3;
+    semaforo = 3 : linha3 > 8 ? 2 : 4;
+
+    semaforo = 4 & linha4 = 0 : 4;
+    semaforo = 4 : linha4 > 8 ? 3 : 5; 
+
+    semaforo = 5 & linha5 = 0 : 5;
+    semaforo = 5 : linha5 > 8 ? 4 : 6;
+
+    semaforo = 6 & linha6 = 0 : 6;
+    semaforo = 6 : linha6 > 8 ? 5 : 7;
+
+    semaforo = 7 & linha7 = 0 : 7;
+    semaforo = 7 : linha7 > 8 ? 6 : 8;
+
+    semaforo = 8 & linha8 = 0 : 8;
+    semaforo = 8 : linha8 > 8 ? 7 : 8;
+
+    TRUE: semaforo;
+	esac;
+
+
+SPEC
+!EF!(
+    -- Rainhas no tabuleiro
+    (linha1 = 0 | linha2 = 0 | linha3 = 0 | linha4 = 0 | linha5 = 0 | linha6 = 0 | linha7 = 0 | linha8 = 0) |
+    (linha1 > 8 | linha2 > 8 | linha3 > 8 | linha4 > 8 | linha5 > 8 | linha6 > 8 | linha7 > 8 | linha8 > 8) |
+
+    -- linha
+    ((linha1 = linha2 | 
+    linha1 = linha3 | 
+    linha1 = linha4 | 
+    linha1 = linha5 | 
+    linha1 = linha6 | 
+    linha1 = linha7 | 
+    linha1 = linha8) |
+
+    (linha2 = linha3 | 
+    linha2 = linha4 | 
+    linha2 = linha5 | 
+    linha2 = linha6 | 
+    linha2 = linha7 | 
+    linha2 = linha8) |
+
+    (linha3 = linha4 | 
+    linha3 = linha5 | 
+    linha3 = linha6 | 
+    linha3 = linha7 | 
+    linha3 = linha8) |
+
+    (linha4 = linha5 | 
+    linha4 = linha6 | 
+    linha4 = linha7 | 
+    linha4 = linha8) |
+
+    (linha5 = linha6 | 
+    linha5 = linha7 | 
+    linha5 = linha8) |
+
+    (linha6 = linha7 | 
+    linha6 = linha8) |
+
+    (linha7 = linha8) | 
+
+    -- Diagonal Crescente
+    ((linha1 + 1) = (linha2 + 2) | 
+    (linha1 + 1) = (linha3 + 3) | 
+    (linha1 + 1) = (linha4 + 4) | 
+    (linha1 + 1) = (linha5 + 5) |
+    (linha1 + 1) = (linha6 + 6) |
+    (linha1 + 1) = (linha7 + 7) |
+    (linha1 + 1) = (linha8 + 8)) |
+
+    ((linha2 + 2) = (linha3 + 3) | 
+    (linha2 + 2) = (linha4 + 4) | 
+    (linha2 + 2) = (linha5 + 5) |
+    (linha2 + 2) = (linha6 + 6) |
+    (linha2 + 2) = (linha7 + 7) |
+    (linha2 + 2) = (linha8 + 8)) |
+
+    ((linha3 + 3) = (linha4 + 4) | 
+    (linha3 + 3) = (linha5 + 5) |
+    (linha3 + 3) = (linha6 + 6) |
+    (linha3 + 3) = (linha7 + 7) |
+    (linha3 + 3) = (linha8 + 8)) |
+
+    ((linha4 + 4) = (linha5 + 5) |
+    (linha4 + 4) = (linha6 + 6) |
+    (linha4 + 4) = (linha7 + 7) |
+    (linha4 + 4) = (linha8 + 8)) |
+
+    ((linha5 + 5) = (linha6 + 6) |
+    (linha5 + 5) = (linha7 + 7) |
+    (linha5 + 5) = (linha8 + 8)) |
+
+    ((linha6 + 6) = (linha7 + 7) |
+    (linha6 + 6) = (linha8 + 8)) |
+
+    ((linha7 + 7) = (linha8 + 8)) | 
+    
+    -- Diagonal Decrescente
+    ((linha1 - 1) = (linha2 - 2) | 
+    (linha1 - 1) = (linha3 - 3) | 
+    (linha1 - 1) = (linha4 - 4) | 
+    (linha1 - 1) = (linha5 - 5) |
+    (linha1 - 1) = (linha6 - 6) |
+    (linha1 - 1) = (linha7 - 7) |
+    (linha1 - 1) = (linha8 - 8)) |
+
+    ((linha2 - 2) = (linha3 - 3) | 
+    (linha2 - 2) = (linha4 - 4) | 
+    (linha2 - 2) = (linha5 - 5) |
+    (linha2 - 2) = (linha6 - 6) |
+    (linha2 - 2) = (linha7 - 7) |
+    (linha2 - 2) = (linha8 - 8)) |
+
+    ((linha3 - 3) = (linha4 - 4) | 
+    (linha3 - 3) = (linha5 - 5) |
+    (linha3 - 3) = (linha6 - 6) |
+    (linha3 - 3) = (linha7 - 7) |
+    (linha3 - 3) = (linha8 - 8)) |
+
+    ((linha4 - 4) = (linha5 - 5) |
+    (linha4 - 4) = (linha6 - 6) |
+    (linha4 - 4) = (linha7 - 7) |
+    (linha4 - 4) = (linha8 - 8)) |
+
+    ((linha5 - 5) = (linha6 - 6) |
+    (linha5 - 5) = (linha7 - 7) |
+    (linha5 - 5) = (linha8 - 8)) |
+
+    ((linha6 - 6) = (linha7 - 7) |
+    (linha6 - 6) = (linha8 - 8)) |
+
+    ((linha7 - 7) = (linha8 - 8)))
+)
+
+MODULE rainha1(linha1, linha2, linha3, linha4, linha5, linha6, linha7, linha8, semaforo)
+
+ASSIGN
+next(linha1) := 
+  case  
+    linha1 = 0 & semaforo = 1 : 1;
+    linha1 = 1 & semaforo = 1 : 2;
+    linha1 = 2 & semaforo = 1 : 3;
+    linha1 = 3 & semaforo = 1 : 4;
+    linha1 = 4 & semaforo = 1 : 5;
+    linha1 = 5 & semaforo = 1 : 6;
+    linha1 = 6 & semaforo = 1 : 7;
+    linha1 = 7 & semaforo = 1 : 8;
+    linha1 = 8 & semaforo = 1 : 9;
+    linha1 = 9 & semaforo = 1 : 0;
+    
+    TRUE: linha1;
+  esac;
+
+
+
+MODULE rainha2(linha1, linha2, linha3, linha4, linha5, linha6, linha7, linha8, semaforo)
+
+ASSIGN
+next(linha2) := 
+  case
+    linha2 < 1 & semaforo = 2 &
+    !((1 = linha1) |
+    (((1 + 2) = (linha1 + 1)) & linha1 > 0) |
+    (((1 - 2) = (linha1 - 1)) & linha1 > 0)) : 1;
+    
+    linha2 < 2 & semaforo = 2 &
+    !((2 = linha1) |
+    (((2 + 2) = (linha1 + 1)) & linha1 > 0) |
+    (((2 - 2) = (linha1 - 1)) & linha1 > 0)): 2;
+    
+    linha2 < 3 & semaforo = 2 &
+    !((3 = linha1) |
+    (((3 + 2) = (linha1 + 1)) & linha1 > 0) |
+    (((3 - 2) = (linha1 - 1)) & linha1 > 0)) : 3;
+    
+    linha2 < 4 & semaforo = 2 &
+    !((4 = linha1) |
+    (((4 + 2) = (linha1 + 1)) & linha1 > 0) |
+    (((4 - 2) = (linha1 - 1)) & linha1 > 0)) : 4;
+    
+    linha2 < 5 & semaforo = 2 &
+    !((5 = linha1) |
+    (((5 + 2) = (linha1 + 1)) & linha1 > 0) |
+    (((5 - 2) = (linha1 - 1)) & linha1 > 0)) : 5;
+
+    linha2 < 6 & semaforo = 2 &
+    !((6 = linha1) |
+    (((6 + 2) = (linha1 + 1)) & linha1 > 0) |
+    (((6 - 2) = (linha1 - 1)) & linha1 > 0)) : 6;
+
+    linha2 < 7 & semaforo = 2 &
+    !((7 = linha1) |
+    (((7 + 2) = (linha1 + 1)) & linha1 > 0) |
+    (((7 - 2) = (linha1 - 1)) & linha1 > 0)) : 7;
+
+    linha2 < 8 & semaforo = 2 &
+    !((8 = linha1) |
+    (((8 + 2) = (linha1 + 1)) & linha1 > 0) |
+    (((8 - 2) = (linha1 - 1)) & linha1 > 0)) : 8;
+
+    linha2 < 9 & semaforo = 2 : 9;
+    linha2 = 9 & semaforo = 2 : 0;
+    
+    TRUE: linha2;
+  esac;
+
+
+MODULE rainha3(linha1, linha2, linha3, linha4, linha5, linha6, linha7, linha8, semaforo)
+
+ASSIGN
+next(linha3) := 
+  case
+    linha3 < 1 & semaforo = 3 & 
+    !((1 = linha1) |
+    (1 = linha2) |
+    (((1 + 3) = (linha1 + 1)) & linha1 > 0) |
+    (((1 + 3) = (linha2 + 2)) & linha2 > 0) |
+    (((1 - 3) = (linha1 - 1)) & linha1 > 0) |
+    (((1 - 3) = (linha2 - 2)) & linha2 > 0)) : 1;
+    
+    linha3 < 2 & semaforo = 3 &
+    !((2 = linha1) |
+    (2 = linha2) |
+    (((2 + 3) = (linha1 + 1)) & linha1 > 0) |
+    (((2 + 3) = (linha2 + 2)) & linha2 > 0) |
+    (((2 - 3) = (linha1 - 1)) & linha1 > 0) |
+    (((2 - 3) = (linha2 - 2)) & linha2 > 0)) : 2;
+    
+    linha3 < 3 & semaforo = 3 &
+    !((3 = linha1) |
+    (3 = linha2) |
+    (((3 + 3) = (linha1 + 1)) & linha1 > 0) |
+    (((3 + 3) = (linha2 + 2)) & linha2 > 0) |
+    (((3 - 3) = (linha1 - 1)) & linha1 > 0) |
+    (((3 - 3) = (linha2 - 2)) & linha2 > 0)) : 3;
+    
+    linha3 < 4 & semaforo = 3 &
+    !((4 = linha1) |
+    (4 = linha2) |
+    (((4 + 3) = (linha1 + 1)) & linha1 > 0) |
+    (((4 + 3) = (linha2 + 2)) & linha2 > 0) |
+    (((4 - 3) = (linha1 - 1)) & linha1 > 0) |
+    (((4 - 3) = (linha2 - 2)) & linha2 > 0)) : 4;
+    
+    linha3 < 5 & semaforo = 3 &
+    !((5 = linha1) |
+    (5 = linha2) |
+    (((5 + 3) = (linha1 + 1)) & linha1 > 0) |
+    (((5 + 3) = (linha2 + 2)) & linha2 > 0) |
+    (((5 - 3) = (linha1 - 1)) & linha1 > 0) |
+    (((5 - 3) = (linha2 - 2)) & linha2 > 0)) : 5;
+
+    linha3 < 6 & semaforo = 3 &
+    !((6 = linha1) |
+    (6 = linha2) |
+    (((6 + 3) = (linha1 + 1)) & linha1 > 0) |
+    (((6 + 3) = (linha2 + 2)) & linha2 > 0) |
+    (((6 - 3) = (linha1 - 1)) & linha1 > 0) |
+    (((6 - 3) = (linha2 - 2)) & linha2 > 0)) : 6;
+    
+    linha3 < 7 & semaforo = 3 &
+    !((6 = linha1) |
+    (6 = linha2) |
+    (((7 + 3) = (linha1 + 1)) & linha1 > 0) |
+    (((7 + 3) = (linha2 + 2)) & linha2 > 0) |
+    (((7 - 3) = (linha1 - 1)) & linha1 > 0) |
+    (((7 - 3) = (linha2 - 2)) & linha2 > 0)) : 7;
+    
+    linha3 < 8 & semaforo = 3 &
+    !((8 = linha1) |
+    (8 = linha2) |
+    (((8 + 3) = (linha1 + 1)) & linha1 > 0) |
+    (((8 + 3) = (linha2 + 2)) & linha2 > 0) |
+    (((8 - 3) = (linha1 - 1)) & linha1 > 0) |
+    (((8 - 3) = (linha2 - 2)) & linha2 > 0)) : 8;
+
+    linha3 < 9 & semaforo = 3 : 9;
+    linha3 = 9 & semaforo = 3 : 0;
+    
+    TRUE: linha3;
+  esac;
+
+
+MODULE rainha4(linha1, linha2, linha3, linha4, linha5, linha6, linha7, linha8, semaforo)
+
+ASSIGN
+next(linha4) := 
+  case
+    linha4 < 1 & semaforo = 4 & 
+    !((1 = linha1) | 
+    (1 = linha2) | 
+    (1 = linha3) | 
+    -- Diagonal
+    (((1 + 4) = (linha1 + 1)) & linha1 > 0) | 
+    (((1 + 4) = (linha2 + 2)) & linha2 > 0) | 
+    (((1 + 4) = (linha3 + 3)) & linha3 > 0) | 
+    (((1 - 4) = (linha1 - 1)) & linha1 > 0) |
+    (((1 - 4) = (linha2 - 2)) & linha2 > 0) | 
+    (((1 - 4) = (linha3 - 3)) & linha3 > 0)): 1;
+
+    linha4 < 2 & semaforo = 4 & 
+    !((2 = linha1) | 
+    (2 = linha2) | 
+    (2 = linha3) | 
+    -- Diagonal
+    (((2 + 4) = (linha1 + 1)) & linha1 > 0) | 
+    (((2 + 4) = (linha2 + 2)) & linha2 > 0) | 
+    (((2 + 4) = (linha3 + 3)) & linha3 > 0) | 
+    (((2 - 4) = (linha1 - 1)) & linha1 > 0) |
+    (((2 - 4) = (linha2 - 2)) & linha2 > 0) | 
+    (((2 - 4) = (linha3 - 3)) & linha3 > 0)): 2;
+
+    linha4 < 3 & semaforo = 4 & 
+    !((3 = linha1) | 
+    (3 = linha2) | 
+    (3 = linha3) | 
+    -- Diagonal
+    (((3 + 4) = (linha1 + 1)) & linha1 > 0) | 
+    (((3 + 4) = (linha2 + 2)) & linha2 > 0) | 
+    (((3 + 4) = (linha3 + 3)) & linha3 > 0) | 
+    (((3 - 4) = (linha1 - 1)) & linha1 > 0) |
+    (((3 - 4) = (linha2 - 2)) & linha2 > 0) | 
+    (((3 - 4) = (linha3 - 3)) & linha3 > 0)): 3;
+
+    linha4 < 4 & semaforo = 4 & 
+    !((4 = linha1) | 
+    (4 = linha2) | 
+    (4 = linha3) | 
+    -- Diagonal
+    (((4 + 4) = (linha1 + 1)) & linha1 > 0) | 
+    (((4 + 4) = (linha2 + 2)) & linha2 > 0) | 
+    (((4 + 4) = (linha3 + 3)) & linha3 > 0) | 
+    (((4 - 4) = (linha1 - 1)) & linha1 > 0) |
+    (((4 - 4) = (linha2 - 2)) & linha2 > 0) | 
+    (((4 - 4) = (linha3 - 3)) & linha3 > 0)): 4;
+   
+    linha4 < 5 & semaforo = 4 & 
+    !((5 = linha1) | 
+    (5 = linha2) | 
+    (5 = linha3) | 
+    -- Diagonal
+    (((5 + 4) = (linha1 + 1)) & linha1 > 0) | 
+    (((5 + 4) = (linha2 + 2)) & linha2 > 0) | 
+    (((5 + 4) = (linha3 + 3)) & linha3 > 0) | 
+    (((5 - 4) = (linha1 - 1)) & linha1 > 0) |
+    (((5 - 4) = (linha2 - 2)) & linha2 > 0) | 
+    (((5 - 4) = (linha3 - 3)) & linha3 > 0)): 5;
+
+    linha4 < 6 & semaforo = 4 & 
+    !((6 = linha1) | 
+    (6 = linha2) | 
+    (6 = linha3) | 
+    -- Diagonal
+    (((6 + 4) = (linha1 + 1)) & linha1 > 0) | 
+    (((6 + 4) = (linha2 + 2)) & linha2 > 0) | 
+    (((6 + 4) = (linha3 + 3)) & linha3 > 0) | 
+    (((6 - 4) = (linha1 - 1)) & linha1 > 0) |
+    (((6 - 4) = (linha2 - 2)) & linha2 > 0) | 
+    (((6 - 4) = (linha3 - 3)) & linha3 > 0)): 6;
+
+    linha4 < 7 & semaforo = 4 & 
+    !((7 = linha1) | 
+    (7 = linha2) | 
+    (7 = linha3) | 
+    -- Diagonal
+    (((7 + 4) = (linha1 + 1)) & linha1 > 0) | 
+    (((7 + 4) = (linha2 + 2)) & linha2 > 0) | 
+    (((7 + 4) = (linha3 + 3)) & linha3 > 0) | 
+    (((7 - 4) = (linha1 - 1)) & linha1 > 0) |
+    (((7 - 4) = (linha2 - 2)) & linha2 > 0) | 
+    (((7 - 4) = (linha3 - 3)) & linha3 > 0)): 7;
+
+    linha4 < 8 & semaforo = 4 & 
+    !((8 = linha1) | 
+    (8 = linha2) | 
+    (8 = linha3) | 
+    -- Diagonal
+    (((8 + 4) = (linha1 + 1)) & linha1 > 0) | 
+    (((8 + 4) = (linha2 + 2)) & linha2 > 0) | 
+    (((8 + 4) = (linha3 + 3)) & linha3 > 0) | 
+    (((8 - 4) = (linha1 - 1)) & linha1 > 0) |
+    (((8 - 4) = (linha2 - 2)) & linha2 > 0) | 
+    (((8 - 4) = (linha3 - 3)) & linha3 > 0)): 8;
+
+    linha4 < 9 & semaforo = 4 : 9;
+    linha4 = 9 & semaforo = 4 : 0;
+
+    TRUE: linha4;
+  esac;
+
+
+MODULE rainha5(linha1, linha2, linha3, linha4, linha5, linha6, linha7, linha8, semaforo)
+
+ASSIGN
+next(linha5) := 
+  case
+    linha5 < 1 & semaforo = 5 & 
+    !((1 = linha1) | 
+    (1 = linha2) | 
+    (1 = linha3) | 
+    (1 = linha4) |
+    -- Diagonal
+    (((1 + 5) = (linha1 + 1)) & linha1 > 0) | 
+    (((1 + 5) = (linha2 + 2)) & linha2 > 0) | 
+    (((1 + 5) = (linha3 + 3)) & linha3 > 0) | 
+    (((1 + 5) = (linha4 + 4)) & linha4 > 0) |
+    (((1 - 5) = (linha1 - 1)) & linha1 > 0) |
+    (((1 - 5) = (linha2 - 2)) & linha2 > 0) | 
+    (((1 - 5) = (linha3 - 3)) & linha3 > 0) |
+    (((1 - 5) = (linha4 - 4)) & linha4 > 0)): 1;
+
+    linha5 < 2 & semaforo = 5 & 
+    !((2 = linha1) | 
+    (2 = linha2) | 
+    (2 = linha3) |
+    (2 = linha4) |
+    -- Diagonal
+    (((2 + 5) = (linha1 + 1)) & linha1 > 0) | 
+    (((2 + 5) = (linha2 + 2)) & linha2 > 0) | 
+    (((2 + 5) = (linha3 + 3)) & linha3 > 0) |
+    (((2 + 5) = (linha4 + 4)) & linha4 > 0) |
+    (((2 - 5) = (linha1 - 1)) & linha1 > 0) |
+    (((2 - 5) = (linha2 - 2)) & linha2 > 0) | 
+    (((2 - 5) = (linha3 - 3)) & linha3 > 0) |
+    (((2 - 5) = (linha4 - 4)) & linha4 > 0)): 2;
+
+    linha5 < 3 & semaforo = 5 & 
+    !((3 = linha1) | 
+    (3 = linha2) | 
+    (3 = linha3) |
+    (3 = linha4) |
+    -- Diagonal
+    (((3 + 5) = (linha1 + 1)) & linha1 > 0) | 
+    (((3 + 5) = (linha2 + 2)) & linha2 > 0) | 
+    (((3 + 5) = (linha3 + 3)) & linha3 > 0) |
+    (((3 + 5) = (linha4 + 4)) & linha4 > 0) |
+    (((3 - 5) = (linha1 - 1)) & linha1 > 0) |
+    (((3 - 5) = (linha2 - 2)) & linha2 > 0) | 
+    (((3 - 5) = (linha3 - 3)) & linha3 > 0) |
+    (((3 - 5) = (linha4 - 4)) & linha4 > 0)): 3;
+
+    linha5 < 4 & semaforo = 5 & 
+    !((4 = linha1) | 
+    (4 = linha2) | 
+    (4 = linha3) |
+    (4 = linha4) |
+    -- Diagonal
+    (((4 + 5) = (linha1 + 1)) & linha1 > 0) | 
+    (((4 + 5) = (linha2 + 2)) & linha2 > 0) | 
+    (((4 + 5) = (linha3 + 3)) & linha3 > 0) | 
+    (((4 + 5) = (linha4 + 4)) & linha4 > 0) |
+    (((4 - 5) = (linha1 - 1)) & linha1 > 0) |
+    (((4 - 5) = (linha2 - 2)) & linha2 > 0) | 
+    (((4 - 5) = (linha3 - 3)) & linha3 > 0) |
+    (((4 - 5) = (linha4 - 4)) & linha4 > 0)): 4;
+   
+    linha5 < 5 & semaforo = 5 & 
+    !((5 = linha1) | 
+    (5 = linha2) | 
+    (5 = linha3) |
+    (5 = linha4) |
+    -- Diagonal
+    (((5 + 5) = (linha1 + 1)) & linha1 > 0) | 
+    (((5 + 5) = (linha2 + 2)) & linha2 > 0) | 
+    (((5 + 5) = (linha3 + 3)) & linha3 > 0) | 
+    (((5 + 5) = (linha4 + 4)) & linha4 > 0) |
+    (((5 - 5) = (linha1 - 1)) & linha1 > 0) |
+    (((5 - 5) = (linha2 - 2)) & linha2 > 0) | 
+    (((5 - 5) = (linha3 - 3)) & linha3 > 0) |
+    (((5 - 5) = (linha4 - 4)) & linha4 > 0)): 5;
+
+    linha5 < 6 & semaforo = 5 & 
+    !((6 = linha1) | 
+    (6 = linha2) | 
+    (6 = linha3) |
+    (6 = linha4) |
+    -- Diagonal
+    (((6 + 5) = (linha1 + 1)) & linha1 > 0) | 
+    (((6 + 5) = (linha2 + 2)) & linha2 > 0) | 
+    (((6 + 5) = (linha3 + 3)) & linha3 > 0) | 
+    (((6 + 5) = (linha4 + 4)) & linha4 > 0) |
+    (((6 - 5) = (linha1 - 1)) & linha1 > 0) |
+    (((6 - 5) = (linha2 - 2)) & linha2 > 0) | 
+    (((6 - 5) = (linha3 - 3)) & linha3 > 0) |
+    (((6 - 5) = (linha4 - 4)) & linha4 > 0)): 6;
+
+    linha5 < 7 & semaforo = 5 & 
+    !((7 = linha1) | 
+    (7 = linha2) | 
+    (7 = linha3) |
+    (7 = linha4) |
+    -- Diagonal
+    (((7 + 5) = (linha1 + 1)) & linha1 > 0) | 
+    (((7 + 5) = (linha2 + 2)) & linha2 > 0) | 
+    (((7 + 5) = (linha3 + 3)) & linha3 > 0) | 
+    (((7 + 5) = (linha4 + 4)) & linha4 > 0) |
+    (((7 - 5) = (linha1 - 1)) & linha1 > 0) |
+    (((7 - 5) = (linha2 - 2)) & linha2 > 0) | 
+    (((7 - 5) = (linha3 - 3)) & linha3 > 0) |
+    (((7 - 5) = (linha4 - 4)) & linha4 > 0)): 7;
+
+    linha5 < 8 & semaforo = 5 & 
+    !((8 = linha1) | 
+    (8 = linha2) | 
+    (8 = linha3) |
+    (8 = linha4) |
+    -- Diagonal
+    (((8 + 5) = (linha1 + 1)) & linha1 > 0) | 
+    (((8 + 5) = (linha2 + 2)) & linha2 > 0) | 
+    (((8 + 5) = (linha3 + 3)) & linha3 > 0) | 
+    (((8 + 5) = (linha4 + 4)) & linha4 > 0) |
+    (((8 - 5) = (linha1 - 1)) & linha1 > 0) |
+    (((8 - 5) = (linha2 - 2)) & linha2 > 0) | 
+    (((8 - 5) = (linha3 - 3)) & linha3 > 0) |
+    (((8 - 5) = (linha4 - 4)) & linha4 > 0)): 8;
+
+    linha5 < 9 & semaforo = 5 : 9;
+    linha5 = 9 & semaforo = 5 : 0;
+
+    TRUE: linha5;
+  esac;
+
+
+MODULE rainha6(linha1, linha2, linha3, linha4, linha5, linha6, linha7, linha8, semaforo)
+
+ASSIGN
+next(linha6) := 
+  case
+    linha6 < 1 & semaforo = 6 & 
+    !((1 = linha1) | 
+    (1 = linha2) | 
+    (1 = linha3) | 
+    (1 = linha4) |
+    (1 = linha5) |
+    -- Diagonal
+    (((1 + 6) = (linha1 + 1)) & linha1 > 0) | 
+    (((1 + 6) = (linha2 + 2)) & linha2 > 0) | 
+    (((1 + 6) = (linha3 + 3)) & linha3 > 0) | 
+    (((1 + 6) = (linha4 + 4)) & linha4 > 0) |
+    (((1 + 6) = (linha5 + 5)) & linha5 > 0) |
+    (((1 - 6) = (linha1 - 1)) & linha1 > 0) |
+    (((1 - 6) = (linha2 - 2)) & linha2 > 0) | 
+    (((1 - 6) = (linha3 - 3)) & linha3 > 0) |
+    (((1 - 6) = (linha4 - 4)) & linha4 > 0) |
+    (((1 - 6) = (linha5 - 5)) & linha5 > 0)): 1;
+
+    linha6 < 2 & semaforo = 6 & 
+    !((2 = linha1) | 
+    (2 = linha2) | 
+    (2 = linha3) |
+    (2 = linha4) |
+    (2 = linha5) |
+    -- Diagonal
+    (((2 + 6) = (linha1 + 1)) & linha1 > 0) | 
+    (((2 + 6) = (linha2 + 2)) & linha2 > 0) | 
+    (((2 + 6) = (linha3 + 3)) & linha3 > 0) |
+    (((2 + 6) = (linha4 + 4)) & linha4 > 0) |
+    (((2 + 6) = (linha5 + 5)) & linha5 > 0) |
+    (((2 - 6) = (linha1 - 1)) & linha1 > 0) |
+    (((2 - 6) = (linha2 - 2)) & linha2 > 0) | 
+    (((2 - 6) = (linha3 - 3)) & linha3 > 0) |
+    (((2 - 6) = (linha4 - 4)) & linha4 > 0) |
+    (((2 - 6) = (linha5 - 5)) & linha5 > 0)): 2;
+
+    linha6 < 3 & semaforo = 6 & 
+    !((3 = linha1) | 
+    (3 = linha2) | 
+    (3 = linha3) |
+    (3 = linha4) |
+    (3 = linha5) |
+    -- Diagonal
+    (((3 + 6) = (linha1 + 1)) & linha1 > 0) | 
+    (((3 + 6) = (linha2 + 2)) & linha2 > 0) | 
+    (((3 + 6) = (linha3 + 3)) & linha3 > 0) |
+    (((3 + 6) = (linha4 + 4)) & linha4 > 0) |
+    (((3 + 6) = (linha5 + 5)) & linha5 > 0) |
+    (((3 - 6) = (linha1 - 1)) & linha1 > 0) |
+    (((3 - 6) = (linha2 - 2)) & linha2 > 0) | 
+    (((3 - 6) = (linha3 - 3)) & linha3 > 0) |
+    (((3 - 6) = (linha4 - 4)) & linha4 > 0) |
+    (((3 - 6) = (linha5 - 5)) & linha5 > 0)): 3;
+
+    linha6 < 4 & semaforo = 6 & 
+    !((4 = linha1) | 
+    (4 = linha2) | 
+    (4 = linha3) |
+    (4 = linha4) |
+    (4 = linha5) |
+    -- Diagonal
+    (((4 + 6) = (linha1 + 1)) & linha1 > 0) | 
+    (((4 + 6) = (linha2 + 2)) & linha2 > 0) | 
+    (((4 + 6) = (linha3 + 3)) & linha3 > 0) | 
+    (((4 + 6) = (linha4 + 4)) & linha4 > 0) |
+    (((4 + 6) = (linha5 + 5)) & linha5 > 0) |
+    (((4 - 6) = (linha1 - 1)) & linha1 > 0) |
+    (((4 - 6) = (linha2 - 2)) & linha2 > 0) | 
+    (((4 - 6) = (linha3 - 3)) & linha3 > 0) |
+    (((4 - 6) = (linha4 - 4)) & linha4 > 0) |
+    (((4 - 6) = (linha5 - 5)) & linha5 > 0)): 4;
+   
+    linha6 < 5 & semaforo = 6 & 
+    !((5 = linha1) | 
+    (5 = linha2) | 
+    (5 = linha3) |
+    (5 = linha4) |
+    (5 = linha5) |
+    -- Diagonal
+    (((5 + 6) = (linha1 + 1)) & linha1 > 0) | 
+    (((5 + 6) = (linha2 + 2)) & linha2 > 0) | 
+    (((5 + 6) = (linha3 + 3)) & linha3 > 0) | 
+    (((5 + 6) = (linha4 + 4)) & linha4 > 0) |
+    (((5 + 6) = (linha5 + 5)) & linha5 > 0) |
+    (((5 - 6) = (linha1 - 1)) & linha1 > 0) |
+    (((5 - 6) = (linha2 - 2)) & linha2 > 0) | 
+    (((5 - 6) = (linha3 - 3)) & linha3 > 0) |
+    (((5 - 6) = (linha4 - 4)) & linha4 > 0) |
+    (((5 - 6) = (linha5 - 5)) & linha5 > 0)): 5;
+
+    linha6 < 6 & semaforo = 6 & 
+    !((6 = linha1) | 
+    (6 = linha2) | 
+    (6 = linha3) |
+    (6 = linha4) |
+    (6 = linha5) |
+    -- Diagonal
+    (((6 + 6) = (linha1 + 1)) & linha1 > 0) | 
+    (((6 + 6) = (linha2 + 2)) & linha2 > 0) | 
+    (((6 + 6) = (linha3 + 3)) & linha3 > 0) | 
+    (((6 + 6) = (linha4 + 4)) & linha4 > 0) |
+    (((6 + 6) = (linha5 + 5)) & linha5 > 0) |
+    (((6 - 6) = (linha1 - 1)) & linha1 > 0) |
+    (((6 - 6) = (linha2 - 2)) & linha2 > 0) | 
+    (((6 - 6) = (linha3 - 3)) & linha3 > 0) |
+    (((6 - 6) = (linha4 - 4)) & linha4 > 0) |
+    (((6 - 6) = (linha5 - 5)) & linha5 > 0)): 6;
+
+    linha6 < 7 & semaforo = 6 & 
+    !((7 = linha1) | 
+    (7 = linha2) | 
+    (7 = linha3) |
+    (7 = linha4) |
+    (7 = linha5) |
+    -- Diagonal
+    (((7 + 6) = (linha1 + 1)) & linha1 > 0) | 
+    (((7 + 6) = (linha2 + 2)) & linha2 > 0) | 
+    (((7 + 6) = (linha3 + 3)) & linha3 > 0) | 
+    (((7 + 6) = (linha4 + 4)) & linha4 > 0) |
+    (((7 + 6) = (linha5 + 5)) & linha5 > 0) |
+    (((7 - 6) = (linha1 - 1)) & linha1 > 0) |
+    (((7 - 6) = (linha2 - 2)) & linha2 > 0) | 
+    (((7 - 6) = (linha3 - 3)) & linha3 > 0) |
+    (((7 - 6) = (linha4 - 4)) & linha4 > 0) |
+    (((7 - 6) = (linha5 - 5)) & linha5 > 0)): 7;
+
+    linha6 < 8 & semaforo = 6 & 
+    !((8 = linha1) | 
+    (8 = linha2) | 
+    (8 = linha3) |
+    (8 = linha4) |
+    (8 = linha5) |
+    -- Diagonal
+    (((8 + 6) = (linha1 + 1)) & linha1 > 0) | 
+    (((8 + 6) = (linha2 + 2)) & linha2 > 0) | 
+    (((8 + 6) = (linha3 + 3)) & linha3 > 0) | 
+    (((8 + 6) = (linha4 + 4)) & linha4 > 0) |
+    (((8 + 6) = (linha5 + 5)) & linha5 > 0) |
+    (((8 - 6) = (linha1 - 1)) & linha1 > 0) |
+    (((8 - 6) = (linha2 - 2)) & linha2 > 0) | 
+    (((8 - 6) = (linha3 - 3)) & linha3 > 0) |
+    (((8 - 6) = (linha4 - 4)) & linha4 > 0) |
+    (((8 - 6) = (linha5 - 5)) & linha5 > 0)): 8;
+
+    linha6 < 9 & semaforo = 6 : 9;
+    linha6 = 9 & semaforo = 6 : 0;
+
+    TRUE: linha6;
+  esac;
+
+MODULE rainha7(linha1, linha2, linha3, linha4, linha5, linha6, linha7, linha8, semaforo)
+
+ASSIGN
+next(linha7) := 
+  case
+    linha7 < 1 & semaforo = 7 & 
+    !((1 = linha1) | 
+    (1 = linha2) | 
+    (1 = linha3) | 
+    (1 = linha4) |
+    (1 = linha5) |
+    (1 = linha6) |
+    -- Diagonal
+    (((1 + 7) = (linha1 + 1)) & linha1 > 0) | 
+    (((1 + 7) = (linha2 + 2)) & linha2 > 0) | 
+    (((1 + 7) = (linha3 + 3)) & linha3 > 0) | 
+    (((1 + 7) = (linha4 + 4)) & linha4 > 0) |
+    (((1 + 7) = (linha5 + 5)) & linha5 > 0) |
+    (((1 + 7) = (linha6 + 6)) & linha6 > 0) |
+    (((1 - 7) = (linha1 - 1)) & linha1 > 0) |
+    (((1 - 7) = (linha2 - 2)) & linha2 > 0) | 
+    (((1 - 7) = (linha3 - 3)) & linha3 > 0) |
+    (((1 - 7) = (linha4 - 4)) & linha4 > 0) |
+    (((1 - 7) = (linha5 - 5)) & linha5 > 0) |
+    (((1 - 7) = (linha6 - 6)) & linha6 > 0)): 1;
+
+    linha7 < 2 & semaforo = 7 & 
+    !((2 = linha1) | 
+    (2 = linha2) | 
+    (2 = linha3) |
+    (2 = linha4) |
+    (2 = linha5) |
+    (2 = linha6) |
+    -- Diagonal
+    (((2 + 7) = (linha1 + 1)) & linha1 > 0) | 
+    (((2 + 7) = (linha2 + 2)) & linha2 > 0) | 
+    (((2 + 7) = (linha3 + 3)) & linha3 > 0) |
+    (((2 + 7) = (linha4 + 4)) & linha4 > 0) |
+    (((2 + 7) = (linha5 + 5)) & linha5 > 0) |
+    (((2 + 7) = (linha6 + 6)) & linha6 > 0) |
+    (((2 - 7) = (linha1 - 1)) & linha1 > 0) |
+    (((2 - 7) = (linha2 - 2)) & linha2 > 0) | 
+    (((2 - 7) = (linha3 - 3)) & linha3 > 0) |
+    (((2 - 7) = (linha4 - 4)) & linha4 > 0) |
+    (((2 - 7) = (linha5 - 5)) & linha5 > 0) |
+    (((2 - 7) = (linha6 - 6)) & linha6 > 0)): 2;
+
+    linha7 < 3 & semaforo = 7 & 
+    !((3 = linha1) | 
+    (3 = linha2) | 
+    (3 = linha3) |
+    (3 = linha4) |
+    (3 = linha5) |
+    (3 = linha6) |
+    -- Diagonal
+    (((3 + 7) = (linha1 + 1)) & linha1 > 0) | 
+    (((3 + 7) = (linha2 + 2)) & linha2 > 0) | 
+    (((3 + 7) = (linha3 + 3)) & linha3 > 0) |
+    (((3 + 7) = (linha4 + 4)) & linha4 > 0) |
+    (((3 + 7) = (linha5 + 5)) & linha5 > 0) |
+    (((3 + 7) = (linha6 + 6)) & linha6 > 0) |
+    (((3 - 7) = (linha1 - 1)) & linha1 > 0) |
+    (((3 - 7) = (linha2 - 2)) & linha2 > 0) | 
+    (((3 - 7) = (linha3 - 3)) & linha3 > 0) |
+    (((3 - 7) = (linha4 - 4)) & linha4 > 0) |
+    (((3 - 7) = (linha5 - 5)) & linha5 > 0) |
+    (((3 - 7) = (linha6 - 6)) & linha6 > 0)): 3;
+
+    linha7 < 4 & semaforo = 7 & 
+    !((4 = linha1) | 
+    (4 = linha2) | 
+    (4 = linha3) |
+    (4 = linha4) |
+    (4 = linha5) |
+    (4 = linha6) |
+    -- Diagonal
+    (((4 + 7) = (linha1 + 1)) & linha1 > 0) | 
+    (((4 + 7) = (linha2 + 2)) & linha2 > 0) | 
+    (((4 + 7) = (linha3 + 3)) & linha3 > 0) | 
+    (((4 + 7) = (linha4 + 4)) & linha4 > 0) |
+    (((4 + 7) = (linha5 + 5)) & linha5 > 0) |
+    (((4 + 7) = (linha6 + 6)) & linha6 > 0) |
+    (((4 - 7) = (linha1 - 1)) & linha1 > 0) |
+    (((4 - 7) = (linha2 - 2)) & linha2 > 0) | 
+    (((4 - 7) = (linha3 - 3)) & linha3 > 0) |
+    (((4 - 7) = (linha4 - 4)) & linha4 > 0) |
+    (((4 - 7) = (linha5 - 5)) & linha5 > 0) |
+    (((4 - 7) = (linha6 - 6)) & linha6 > 0)): 4;
+   
+    linha7 < 5 & semaforo = 7 & 
+    !((5 = linha1) | 
+    (5 = linha2) | 
+    (5 = linha3) |
+    (5 = linha4) |
+    (5 = linha5) |
+    (5 = linha6) |
+    -- Diagonal
+    (((5 + 7) = (linha1 + 1)) & linha1 > 0) | 
+    (((5 + 7) = (linha2 + 2)) & linha2 > 0) | 
+    (((5 + 7) = (linha3 + 3)) & linha3 > 0) | 
+    (((5 + 7) = (linha4 + 4)) & linha4 > 0) |
+    (((5 + 7) = (linha5 + 5)) & linha5 > 0) |
+    (((5 + 7) = (linha6 + 6)) & linha6 > 0) |
+    (((5 - 7) = (linha1 - 1)) & linha1 > 0) |
+    (((5 - 7) = (linha2 - 2)) & linha2 > 0) | 
+    (((5 - 7) = (linha3 - 3)) & linha3 > 0) |
+    (((5 - 7) = (linha4 - 4)) & linha4 > 0) |
+    (((5 - 7) = (linha5 - 5)) & linha5 > 0) |
+    (((5 - 7) = (linha6 - 6)) & linha6 > 0)): 5;
+
+    linha7 < 6 & semaforo = 7 & 
+    !((6 = linha1) | 
+    (6 = linha2) | 
+    (6 = linha3) |
+    (6 = linha4) |
+    (6 = linha5) |
+    (6 = linha6) |
+    -- Diagonal
+    (((6 + 7) = (linha1 + 1)) & linha1 > 0) | 
+    (((6 + 7) = (linha2 + 2)) & linha2 > 0) | 
+    (((6 + 7) = (linha3 + 3)) & linha3 > 0) | 
+    (((6 + 7) = (linha4 + 4)) & linha4 > 0) |
+    (((6 + 7) = (linha5 + 5)) & linha5 > 0) |
+    (((6 + 7) = (linha6 + 6)) & linha6 > 0) |
+    (((6 - 7) = (linha1 - 1)) & linha1 > 0) |
+    (((6 - 7) = (linha2 - 2)) & linha2 > 0) | 
+    (((6 - 7) = (linha3 - 3)) & linha3 > 0) |
+    (((6 - 7) = (linha4 - 4)) & linha4 > 0) |
+    (((6 - 7) = (linha5 - 5)) & linha5 > 0) |
+    (((6 - 7) = (linha6 - 6)) & linha6 > 0)): 6;
+
+    linha7 < 7 & semaforo = 7 & 
+    !((7 = linha1) | 
+    (7 = linha2) | 
+    (7 = linha3) |
+    (7 = linha4) |
+    (7 = linha5) |
+    (7 = linha6) |
+    -- Diagonal
+    (((7 + 7) = (linha1 + 1)) & linha1 > 0) | 
+    (((7 + 7) = (linha2 + 2)) & linha2 > 0) | 
+    (((7 + 7) = (linha3 + 3)) & linha3 > 0) | 
+    (((7 + 7) = (linha4 + 4)) & linha4 > 0) |
+    (((7 + 7) = (linha5 + 5)) & linha5 > 0) |
+    (((7 + 7) = (linha6 + 6)) & linha6 > 0) |
+    (((7 - 7) = (linha1 - 1)) & linha1 > 0) |
+    (((7 - 7) = (linha2 - 2)) & linha2 > 0) | 
+    (((7 - 7) = (linha3 - 3)) & linha3 > 0) |
+    (((7 - 7) = (linha4 - 4)) & linha4 > 0) |
+    (((7 - 7) = (linha5 - 5)) & linha5 > 0) |
+    (((7 - 7) = (linha6 - 6)) & linha6 > 0)): 7;
+
+    linha7 < 8 & semaforo = 7 & 
+    !((8 = linha1) | 
+    (8 = linha2) | 
+    (8 = linha3) |
+    (8 = linha4) |
+    (8 = linha5) |
+    (8 = linha6) |
+    -- Diagonal
+    (((8 + 7) = (linha1 + 1)) & linha1 > 0) | 
+    (((8 + 7) = (linha2 + 2)) & linha2 > 0) | 
+    (((8 + 7) = (linha3 + 3)) & linha3 > 0) | 
+    (((8 + 7) = (linha4 + 4)) & linha4 > 0) |
+    (((8 + 7) = (linha5 + 5)) & linha5 > 0) |
+    (((8 + 7) = (linha6 + 6)) & linha6 > 0) |
+    (((8 - 7) = (linha1 - 1)) & linha1 > 0) |
+    (((8 - 7) = (linha2 - 2)) & linha2 > 0) | 
+    (((8 - 7) = (linha3 - 3)) & linha3 > 0) |
+    (((8 - 7) = (linha4 - 4)) & linha4 > 0) |
+    (((8 - 7) = (linha5 - 5)) & linha5 > 0) |
+    (((8 - 7) = (linha6 - 6)) & linha6 > 0)): 8;
+
+    linha7 < 9 & semaforo = 7 : 9;
+    linha7 = 9 & semaforo = 7 : 0;
+
+    TRUE: linha7;
+  esac;
+
+
+MODULE rainha8(linha1, linha2, linha3, linha4, linha5, linha6, linha7, linha8, semaforo)
+
+ASSIGN
+next(linha8) := 
+  case
+    linha8 < 1 & semaforo = 8 & 
+    !((1 = linha1) | 
+    (1 = linha2) | 
+    (1 = linha3) | 
+    (1 = linha4) |
+    (1 = linha5) |
+    (1 = linha6) |
+    (1 = linha7) |
+    -- Diagonal
+    (((1 + 8) = (linha1 + 1)) & linha1 > 0) | 
+    (((1 + 8) = (linha2 + 2)) & linha2 > 0) | 
+    (((1 + 8) = (linha3 + 3)) & linha3 > 0) | 
+    (((1 + 8) = (linha4 + 4)) & linha4 > 0) |
+    (((1 + 8) = (linha5 + 5)) & linha5 > 0) |
+    (((1 + 8) = (linha6 + 6)) & linha6 > 0) |
+    (((1 + 8) = (linha7 + 7)) & linha7 > 0) |
+    (((1 - 8) = (linha1 - 1)) & linha1 > 0) |
+    (((1 - 8) = (linha2 - 2)) & linha2 > 0) | 
+    (((1 - 8) = (linha3 - 3)) & linha3 > 0) |
+    (((1 - 8) = (linha4 - 4)) & linha4 > 0) |
+    (((1 - 8) = (linha5 - 5)) & linha5 > 0) |
+    (((1 - 8) = (linha6 - 6)) & linha6 > 0) |
+    (((1 - 8) = (linha7 - 7)) & linha7 > 0)): 1;
+
+    linha8 < 2 & semaforo = 8 & 
+    !((2 = linha1) | 
+    (2 = linha2) | 
+    (2 = linha3) |
+    (2 = linha4) |
+    (2 = linha5) |
+    (2 = linha6) |
+    (2 = linha7) |
+    -- Diagonal
+    (((2 + 8) = (linha1 + 1)) & linha1 > 0) | 
+    (((2 + 8) = (linha2 + 2)) & linha2 > 0) | 
+    (((2 + 8) = (linha3 + 3)) & linha3 > 0) |
+    (((2 + 8) = (linha4 + 4)) & linha4 > 0) |
+    (((2 + 8) = (linha5 + 5)) & linha5 > 0) |
+    (((2 + 8) = (linha6 + 6)) & linha6 > 0) |
+    (((2 + 8) = (linha7 + 7)) & linha7 > 0) |
+    (((2 - 8) = (linha1 - 1)) & linha1 > 0) |
+    (((2 - 8) = (linha2 - 2)) & linha2 > 0) | 
+    (((2 - 8) = (linha3 - 3)) & linha3 > 0) |
+    (((2 - 8) = (linha4 - 4)) & linha4 > 0) |
+    (((2 - 8) = (linha5 - 5)) & linha5 > 0) |
+    (((2 - 8) = (linha6 - 6)) & linha6 > 0) |
+    (((2 - 8) = (linha7 - 7)) & linha7 > 0)): 2;
+
+    linha8 < 3 & semaforo = 8 & 
+    !((3 = linha1) | 
+    (3 = linha2) | 
+    (3 = linha3) |
+    (3 = linha4) |
+    (3 = linha5) |
+    (3 = linha6) |
+    (3 = linha7) |
+    -- Diagonal
+    (((3 + 8) = (linha1 + 1)) & linha1 > 0) | 
+    (((3 + 8) = (linha2 + 2)) & linha2 > 0) | 
+    (((3 + 8) = (linha3 + 3)) & linha3 > 0) |
+    (((3 + 8) = (linha4 + 4)) & linha4 > 0) |
+    (((3 + 8) = (linha5 + 5)) & linha5 > 0) |
+    (((3 + 8) = (linha6 + 6)) & linha6 > 0) |
+    (((3 + 8) = (linha7 + 7)) & linha7 > 0) |
+    (((3 - 8) = (linha1 - 1)) & linha1 > 0) |
+    (((3 - 8) = (linha2 - 2)) & linha2 > 0) | 
+    (((3 - 8) = (linha3 - 3)) & linha3 > 0) |
+    (((3 - 8) = (linha4 - 4)) & linha4 > 0) |
+    (((3 - 8) = (linha5 - 5)) & linha5 > 0) |
+    (((3 - 8) = (linha6 - 6)) & linha6 > 0) |
+    (((3 - 8) = (linha7 - 7)) & linha7 > 0)): 3;
+
+    linha8 < 4 & semaforo = 8 & 
+    !((4 = linha1) | 
+    (4 = linha2) | 
+    (4 = linha3) |
+    (4 = linha4) |
+    (4 = linha5) |
+    (4 = linha6) |
+    (4 = linha7) |
+    -- Diagonal
+    (((4 + 8) = (linha1 + 1)) & linha1 > 0) | 
+    (((4 + 8) = (linha2 + 2)) & linha2 > 0) | 
+    (((4 + 8) = (linha3 + 3)) & linha3 > 0) | 
+    (((4 + 8) = (linha4 + 4)) & linha4 > 0) |
+    (((4 + 8) = (linha5 + 5)) & linha5 > 0) |
+    (((4 + 8) = (linha6 + 6)) & linha6 > 0) |
+    (((4 + 8) = (linha7 + 7)) & linha7 > 0) |
+    (((4 - 8) = (linha1 - 1)) & linha1 > 0) |
+    (((4 - 8) = (linha2 - 2)) & linha2 > 0) | 
+    (((4 - 8) = (linha3 - 3)) & linha3 > 0) |
+    (((4 - 8) = (linha4 - 4)) & linha4 > 0) |
+    (((4 - 8) = (linha5 - 5)) & linha5 > 0) |
+    (((4 - 8) = (linha6 - 6)) & linha6 > 0) |
+    (((4 - 8) = (linha7 - 7)) & linha7 > 0)): 4;
+   
+    linha8 < 5 & semaforo = 8 & 
+    !((5 = linha1) | 
+    (5 = linha2) | 
+    (5 = linha3) |
+    (5 = linha4) |
+    (5 = linha5) |
+    (5 = linha6) |
+    (5 = linha7) |
+    -- Diagonal
+    (((5 + 8) = (linha1 + 1)) & linha1 > 0) | 
+    (((5 + 8) = (linha2 + 2)) & linha2 > 0) | 
+    (((5 + 8) = (linha3 + 3)) & linha3 > 0) | 
+    (((5 + 8) = (linha4 + 4)) & linha4 > 0) |
+    (((5 + 8) = (linha5 + 5)) & linha5 > 0) |
+    (((5 + 8) = (linha6 + 6)) & linha6 > 0) |
+    (((5 + 8) = (linha7 + 7)) & linha7 > 0) |
+    (((5 - 8) = (linha1 - 1)) & linha1 > 0) |
+    (((5 - 8) = (linha2 - 2)) & linha2 > 0) | 
+    (((5 - 8) = (linha3 - 3)) & linha3 > 0) |
+    (((5 - 8) = (linha4 - 4)) & linha4 > 0) |
+    (((5 - 8) = (linha5 - 5)) & linha5 > 0) |
+    (((5 - 8) = (linha6 - 6)) & linha6 > 0) |
+    (((5 - 8) = (linha7 - 7)) & linha7 > 0)): 5;
+
+    linha8 < 6 & semaforo = 8 & 
+    !((6 = linha1) | 
+    (6 = linha2) | 
+    (6 = linha3) |
+    (6 = linha4) |
+    (6 = linha5) |
+    (6 = linha6) |
+    (6 = linha7) |
+    -- Diagonal
+    (((6 + 8) = (linha1 + 1)) & linha1 > 0) | 
+    (((6 + 8) = (linha2 + 2)) & linha2 > 0) | 
+    (((6 + 8) = (linha3 + 3)) & linha3 > 0) | 
+    (((6 + 8) = (linha4 + 4)) & linha4 > 0) |
+    (((6 + 8) = (linha5 + 5)) & linha5 > 0) |
+    (((6 + 8) = (linha6 + 6)) & linha6 > 0) |
+    (((6 + 8) = (linha7 + 7)) & linha7 > 0) |
+    (((6 - 8) = (linha1 - 1)) & linha1 > 0) |
+    (((6 - 8) = (linha2 - 2)) & linha2 > 0) | 
+    (((6 - 8) = (linha3 - 3)) & linha3 > 0) |
+    (((6 - 8) = (linha4 - 4)) & linha4 > 0) |
+    (((6 - 8) = (linha5 - 5)) & linha5 > 0) |
+    (((6 - 8) = (linha6 - 6)) & linha6 > 0) |
+    (((6 - 8) = (linha7 - 7)) & linha7 > 0)): 6;
+
+    linha8 < 7 & semaforo = 8 & 
+    !((7 = linha1) | 
+    (7 = linha2) | 
+    (7 = linha3) |
+    (7 = linha4) |
+    (7 = linha5) |
+    (7 = linha6) |
+    (7 = linha7) |
+    -- Diagonal
+    (((7 + 8) = (linha1 + 1)) & linha1 > 0) | 
+    (((7 + 8) = (linha2 + 2)) & linha2 > 0) | 
+    (((7 + 8) = (linha3 + 3)) & linha3 > 0) | 
+    (((7 + 8) = (linha4 + 4)) & linha4 > 0) |
+    (((7 + 8) = (linha5 + 5)) & linha5 > 0) |
+    (((7 + 8) = (linha6 + 6)) & linha6 > 0) |
+    (((7 + 8) = (linha7 + 7)) & linha7 > 0) |
+    (((7 - 8) = (linha1 - 1)) & linha1 > 0) |
+    (((7 - 8) = (linha2 - 2)) & linha2 > 0) | 
+    (((7 - 8) = (linha3 - 3)) & linha3 > 0) |
+    (((7 - 8) = (linha4 - 4)) & linha4 > 0) |
+    (((7 - 8) = (linha5 - 5)) & linha5 > 0) |
+    (((7 - 8) = (linha6 - 6)) & linha6 > 0) |
+    (((7 - 8) = (linha7 - 7)) & linha7 > 0)): 7;
+
+    linha8 < 8 & semaforo = 8 & 
+    !((8 = linha1) | 
+    (8 = linha2) | 
+    (8 = linha3) |
+    (8 = linha4) |
+    (8 = linha5) |
+    (8 = linha6) |
+    (8 = linha7) |
+    -- Diagonal
+    (((8 + 8) = (linha1 + 1)) & linha1 > 0) | 
+    (((8 + 8) = (linha2 + 2)) & linha2 > 0) | 
+    (((8 + 8) = (linha3 + 3)) & linha3 > 0) | 
+    (((8 + 8) = (linha4 + 4)) & linha4 > 0) |
+    (((8 + 8) = (linha5 + 5)) & linha5 > 0) |
+    (((8 + 8) = (linha6 + 6)) & linha6 > 0) |
+    (((8 + 8) = (linha7 + 7)) & linha7 > 0) |
+    (((8 - 8) = (linha1 - 1)) & linha1 > 0) |
+    (((8 - 8) = (linha2 - 2)) & linha2 > 0) | 
+    (((8 - 8) = (linha3 - 3)) & linha3 > 0) |
+    (((8 - 8) = (linha4 - 4)) & linha4 > 0) |
+    (((8 - 8) = (linha5 - 5)) & linha5 > 0) |
+    (((8 - 8) = (linha6 - 6)) & linha6 > 0) |
+    (((8 - 8) = (linha7 - 7)) & linha7 > 0)): 8;
+
+    linha8 < 9 & semaforo = 8 : 9;
+    linha8 = 9 & semaforo = 8 : 0;
+
+    TRUE: linha8;
+  esac;
+
+
+FAIRNESS 
+  running;
+
